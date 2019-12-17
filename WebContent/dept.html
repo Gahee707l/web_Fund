@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h3>DEPT TABLE INSERT</h3>
+	<form name ="f" method="post" action="/SaveDeptServlet">
+	<!-- 서블릿 호출 이름,실 서블릿 이름은 달라도 됨 -->
+	
+	<label for="no">부서번호</label>
+	<input type="number" name="no" id="no"/><br>
+	
+	<label for="name">부서이름</label>
+	<input type="text" name="name" id="name"/><br>
+	
+	<label for="Loc">지역</label>
+	<input type="text" name="Loc" id="Loc"/><br>
+	
+	<button type = submit>부서등록</button>
+	</form>
+</body>
+</html>
