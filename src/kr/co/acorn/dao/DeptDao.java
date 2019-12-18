@@ -1,4 +1,5 @@
 package kr.co.acorn.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,230 +10,70 @@ import kr.co.acorn.dto.DeptDto;
 import kr.co.acorn.util.connLocator;
 
 public class DeptDao {
-	//이제는...connc쪽은 하나도 필요 없다.
 
-	//singleton은 유지
-	public static DeptDao single;
+	private static DeptDao single;
+
 	private DeptDao() {
+
 	}
+
 	public static DeptDao getInstance() {
 		if (single == null) {
 			single = new DeptDao();
 		}
+
 		return single;
 	}
-
-	public boolean insert(DeptDto dto) {
-		// data transfer object
-		boolean isSucess = false;
-
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = connLocator.getConnection();
-
-			StringBuffer sql = new StringBuffer();
-			sql.append("INSERT INTO dept(deptno,dname,loc) VALUES(?,?,?)");
-			pstmt = con.prepareStatement(sql.toString());
-
-			int index = 0;
-			pstmt.setInt(++index, dto.getNo());
-			pstmt.setString(++index, dto.getName());
-			pstmt.setString(++index, dto.getLoc());
-
-			pstmt.executeUpdate();
-			isSucess = true;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return isSucess;
-	}
-
-	public boolean update(DeptDto dto) {
-		boolean isSucess = false;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try {
-			con = connLocator.getConnection();
-
-			StringBuffer sql = new StringBuffer();
-			sql.append("UPDATE dept ");
-			sql.append("SET dname = ?, loc = ? ");
-			sql.append("WHERE deptno = ?");
-			pstmt = con.prepareStatement(sql.toString());
-
-			int index = 0;
-			pstmt.setString(++index, dto.getName());
-			pstmt.setString(++index, dto.getLoc());
-			pstmt.setInt(++index, dto.getNo());
-
-			pstmt.executeUpdate();
-			isSucess = true;
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return isSucess;
-	}
-
-	public boolean delete(int deptNo) {
-		boolean isSucess = false;
-		Connection con = null;
-		PreparedStatement pstmt = null;
-
-		try {
-			con = connLocator.getConnection();
-
-			StringBuffer sql = new StringBuffer();
-			sql.append("DELETE ");
-			sql.append(" FROM dept ");
-			sql.append("WHERE deptno = ?");
-			pstmt = con.prepareStatement(sql.toString());
-
-			pstmt.setInt(1, deptNo);
-
-			pstmt.executeUpdate();
-			isSucess = true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-
-			try {
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return isSucess;
-	}
-
-	public ArrayList<DeptDto> select() {
+	
+	public ArrayList<DeptDto> select(int start,int len){
 		ArrayList<DeptDto> list = new ArrayList<DeptDto>();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
+		
 		try {
 			con = connLocator.getConnection();
-			
+			//보통은 여기부터 에러 잡아서...get connection에서 오류를 던지면 여기서 받는 걸로 한다.
+			//이게 더 안전...하다.
 			StringBuffer sql = new StringBuffer();
 			sql.append("SELECT deptno,dname,loc ");
 			sql.append("FROM dept ");
-			sql.append("order BY deptno");
-
+			sql.append("order by deptno ");
+			sql.append("LIMIT ?,?");
+			
 			pstmt = con.prepareStatement(sql.toString());
-
+			int index = 0;
+			pstmt.setInt(++index,start);
+			pstmt.setInt(++index,len);
+			
 			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int index = 0;
-				int deptno = rs.getInt(++index);
-				String dname = rs.getString(++index);
+			while(rs.next()) {
+				index = 0;
+				int no = rs.getInt(++index);
+				String name = rs.getString(++index);
 				String loc = rs.getString(++index);
-
-				list.add(new DeptDto(deptno,dname,loc));
+				list.add(new DeptDto(no,name,loc));
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
+		}finally {
+			
+				try {
+					if(rs!=null) rs.close();
+					if(pstmt!=null) pstmt.close();
+					if(con != null) con.close();
+					//이것은 반납
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+		
+		
 		return list;
 	}
-
-	public DeptDto select(int deptNo) {
-		DeptDto dto = null;
-		//이걸로 리턴되면 결과값이 없는것이다.
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			con = connLocator.getConnection();
-			
-			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT deptno,dname,loc ");
-			sql.append("FROM dept ");
-			sql.append("where deptno= ?");
-
-			pstmt = con.prepareStatement(sql.toString());
-			
-			int index = 0;
-			pstmt.setInt(++index, deptNo);
-			
-			rs = pstmt.executeQuery();
-
-			if (rs.next()) {
-				index = 0;
-				int deptno = rs.getInt(++index);
-				String dname = rs.getString(++index);
-				String loc = rs.getString(++index);
-
-				dto = new DeptDto(deptno,dname,loc);
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (rs != null) {
-					rs.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (con != null) {
-					con.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return dto;
+	
+	public boolean insert(DeptDto dto){
+		return false;
 	}
 }

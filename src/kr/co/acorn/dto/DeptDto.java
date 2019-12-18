@@ -1,6 +1,7 @@
 package kr.co.acorn.dto;
 
 public class DeptDto {
+
 	private int no;
 	private String name;
 	private String loc;
@@ -8,12 +9,14 @@ public class DeptDto {
 	public DeptDto() {
 		super();
 	}
+	
 	public DeptDto(int no, String name, String loc) {
 		super();
 		this.no = no;
 		this.name = name;
 		this.loc = loc;
 	}
+
 	public int getNo() {
 		return no;
 	}
@@ -32,4 +35,5 @@ public class DeptDto {
 	public void setLoc(String loc) {
 		this.loc = loc;
 	}
+
 }

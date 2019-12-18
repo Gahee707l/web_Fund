@@ -11,7 +11,7 @@ import javax.sql.DataSource;
 public class connLocator {
 //이제 여기서 커넥션 불러오겠다...
 	
-	public static Connection getConnection() {
+	public static Connection getConnection() throws SQLException{
 		DataSource ds = null;
 		Connection con = null;
 		
@@ -21,9 +21,7 @@ public class connLocator {
 			con = ds.getConnection();
 		} catch (NamingException e) {
 			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} 
 		
 		return con;
 	}
