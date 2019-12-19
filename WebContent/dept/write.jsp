@@ -7,7 +7,19 @@
 		<li class="breadcrumb-item active" aria-current="page">Library</li>
 	</ol>
 </nav>
+<% 
+int cPage=0;
+String temPage = request.getParameter("page");
 
+if (temPage == null || temPage.length() == 0) {
+		cPage = 1;
+	}
+	try {
+		cPage = Integer.parseInt(temPage);
+	} catch (NumberFormatException e) {
+		cPage = 1;
+	}
+	%>
 <!--main start-->
 <div class="container">
 	<div class="row">
@@ -36,7 +48,7 @@
 				</div>
 			</form>
 			<div class="text-right">
-				<a href="list.jsp" class="btn btn-outline-secondary">목록</a>
+				<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-secondary">목록</a>
 				<button type="button" id="saveDept" class="btn btn-outline-success">저장</button>
 			</div>
 		</div>
@@ -48,7 +60,7 @@
 
 
 <%@ include file="../inc/footer.jsp"%>
-<!-- 여기부터... -->
+<!-- 여기부터 script... -->
 
 <script>
 $(function(){

@@ -18,6 +18,7 @@ public class connLocator {
 		try {
 			Context context = new InitialContext();
 			ds = (DataSource)context.lookup("java:comp/env/jdbc/acorn");
+			//커넥션 풀 가져오기
 			con = ds.getConnection();
 		} catch (NamingException e) {
 			e.printStackTrace();
