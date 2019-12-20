@@ -1,3 +1,5 @@
+<%@page import="kr.co.acorn.dto.EmpDto"%>
+<%@page import="kr.co.acorn.dao.EmpDao"%>
 <%@ page pageEncoding="utf-8"%>
 <%@ include file="../inc/header.jsp"%>
 <%@page import="kr.co.acorn.dto.DeptDto"%>
@@ -6,12 +8,11 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item"><a href="/index.jsp">Home</a></li>
-		<li class="breadcrumb-item active" aria-current="page">Dept</li>
+		<li class="breadcrumb-item active" aria-current="page">사원</li>
 	</ol>
 </nav>
 <%
 	request.setCharacterEncoding("utf-8");
-	// 하지만 깨진다...한글은 깨진다. 파라미터로 한글을 안전히 받아오기위한 추가
 	//DeptDto dto = new DeptDto(no, name, loc);
 
 	String temPage = request.getParameter("page");
@@ -22,7 +23,6 @@
 	if (tempNo == null || tempNo.length() == 0) {
 		response.sendRedirect("list.jsp?page=" + temPage);
 		return;
-		//이전 페이지로 보내기.return 안해주면 가끔 문제 생길 수 있음...return 안하면 느린 네트워크 상황에서 출력을 좀 하다가 넘어갈 수 있음.
 	}
 	int cPage = 0;
 	int no = 0;
@@ -38,15 +38,20 @@
 		return;
 	}
 
-	DeptDao dao = DeptDao.getInstance();
-	DeptDto dto = dao.select(no);
+	EmpDao dao = EmpDao.getInstance();
+	EmpDto dto = dao.select(no);
 	if (dto == null) {
 		//없는 페이지
 		response.sendRedirect("list.jsp?page=" + temPage);
 		return;
 	}
 	String name = dto.getName();
-	String loc = dto.getLoc();
+	String job = dto.getJob();
+	int mgr = dto.getMgr();
+	String hiredate = dto.getHiredate();
+	int sal = dto.getSal();
+	int comm = dto.getComm();
+	int deptNo = dto.getDeptDto().getNo();
 %>
 <!--main start-->
 <div class="container">
@@ -59,44 +64,50 @@
 					<label for="no" class="col-sm-2 col-form-label">사원번호</label>
 					<!-- 반응형 -->
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="no" name="no">
+						<input type="number" class="form-control" id="no" readonly="readonly" name="no" value="<%=no %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="name" name="name">
+						<input type="text" class="form-control" id="name" name="name" value="<%=name %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="job" class="col-sm-2 col-form-label">직책</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="job" name="job">
+						<input type="text" class="form-control" id="job" name="job" value="<%=job %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="mgr" class="col-sm-2 col-form-label">사수</label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="mgr" name="mgr">
+						<input type="number" class="form-control" id="mgr" name="mgr" value="<%=mgr %>">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="sal" class="col-sm-2 col-form-label">월금</label>
+					<label for="hiredate" class="col-sm-2 col-form-label">입사날짜</label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="sal" name="sal">
+						<input type="text" class="form-control" id="hiredate" readonly="readonly" name="hiredate" name="hiredate" value="<%=hiredate %>">
+					</div>
+				</div>
+				<div class="form-group row">
+					<label for="sal" class="col-sm-2 col-form-label">월급</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="sal" name="sal" value="<%=sal %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="comm" class="col-sm-2 col-form-label">상여금</label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="comm" name="comm">
+						<input type="number" class="form-control" id="comm" name="comm" value="<%=comm %>">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="deptNo" class="col-sm-2 col-form-label">부서 번호</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="deptNo"
-							name="deptNo">
+							name="deptNo" value="<%=deptNo %>">
 					</div>
 				</div>
 				<input type="hidden" name="page" value="<%=cPage%>">

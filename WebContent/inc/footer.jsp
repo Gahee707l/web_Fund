@@ -1,7 +1,8 @@
 <%@ page pageEncoding="utf-8" %>
 
 <!--footer start-->
-  <footer class="bg-dark bd-footer fixed-bottom" style="color: white;padding: 1em;">
+  <footer class="bg-dark bd-footer " style="color: white;padding: 1em;margin-top: 1em;">
+  						<%--fixed-bottom --%>
     <div class="container-fluid text-center">
       <!-- <ul class="bd-footer-links">
         <li><a href="https://github.com/twbs/bootstrap">GitHub</a></li>

@@ -7,11 +7,11 @@
 		<li class="breadcrumb-item active" aria-current="page">사원관리</li>
 	</ol>
 </nav>
-<% 
-int cPage=0;
-String temPage = request.getParameter("page");
+<%
+	int cPage = 0;
+	String temPage = request.getParameter("page");
 
-if (temPage == null || temPage.length() == 0) {
+	if (temPage == null || temPage.length() == 0) {
 		cPage = 1;
 	}
 	try {
@@ -19,21 +19,22 @@ if (temPage == null || temPage.length() == 0) {
 	} catch (NumberFormatException e) {
 		cPage = 1;
 	}
-	%>
+%>
 <!--main start-->
 <div class="container">
 	<div class="row">
 		<div class="col-lg-12">
-		<h3>사원 등록</h3>
+			<h3>사원 등록</h3>
 
 			<form name="f" method="post" action="save.jsp">
-				<div class="form-group row">
+				<%--<div class="form-group row">
 					<label for="no" class="col-sm-2 col-form-label">사원번호</label>
+					 사실,시스템에서 부여하는 부분이라서 없는게 더 나음. 
 					<!-- 반응형 -->
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="no" name="no">
 					</div>
-				</div>
+				</div>--%>
 				<div class="form-group row">
 					<label for="name" class="col-sm-2 col-form-label">이름</label>
 					<div class="col-sm-10">
@@ -53,7 +54,7 @@ if (temPage == null || temPage.length() == 0) {
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="sal" class="col-sm-2 col-form-label">월금</label>
+					<label for="sal" class="col-sm-2 col-form-label">월급</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="sal" name="sal">
 					</div>
@@ -67,12 +68,14 @@ if (temPage == null || temPage.length() == 0) {
 				<div class="form-group row">
 					<label for="deptNo" class="col-sm-2 col-form-label">부서 번호</label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="deptNo" name="deptNo">
+						<input type="number" class="form-control" id="deptNo"
+							name="deptNo">
 					</div>
 				</div>
 			</form>
 			<div class="text-right">
-				<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-secondary">목록</a>
+				<a href="list.jsp?page=<%=cPage%>"
+					class="btn btn-outline-secondary">목록</a>
 				<button type="button" id="saveEmp" class="btn btn-outline-success">저장</button>
 			</div>
 		</div>
@@ -87,40 +90,41 @@ if (temPage == null || temPage.length() == 0) {
 <!-- 여기부터 script... -->
 
 <script>
-$(function(){
-	//전체 페이지 로딩 후 호출
-	$("#no").focus();
-	$("#saveEmp").click(function(){
-		//js 유효성 검사
-		if($("#no").val().length==0){
+	$(function() {
+		//전체 페이지 로딩 후 호출
+<%--$("#no").focus();--%>
+	$("#saveEmp")
+				.click(
+						function() {
+							//js 유효성 검사
+<%--if($("#no").val().length==0){
 			alert("사원 번호를 입력하세요.");
 			$("#no").focus();
 			return;
-		}
-		if($("#name").val().length==0){
-			alert("이름을 입력하세요.");
-			$("#name").focus();
-			return;
-		}
-		if($("#job").val().length==0){
-			alert("직책을 입력하세요.");
-			$("#job").focus();
-			return;
-		}
-		//사수와 상여금은 필수 X.사수는 기존의 사원번호에서 넣어야함.필수와 옵션 구분 할 것
-		if($("#sal").val().length==0){
-			alert("월급을 입력하세요.");
-			$("#sal").focus();
-			return;
-		}
-		if($("#deptNo").val().length==0){
-			alert("부서 번호를 입력하세요.");
-			$("#deptNo").focus();
-			return;
-		}
-		f.submit();
+		}--%>
+	if ($("#name").val().length == 0) {
+								alert("이름을 입력하세요.");
+								$("#name").focus();
+								return;
+							}
+							if ($("#job").val().length == 0) {
+								alert("직책을 입력하세요.");
+								$("#job").focus();
+								return;
+							}
+							//사수와 상여금은 필수 X.사수는 기존의 사원번호에서 넣어야함.필수와 옵션 구분 할 것
+							if ($("#sal").val().length == 0) {
+								alert("월급을 입력하세요.");
+								$("#sal").focus();
+								return;
+							}
+							if ($("#deptNo").val().length == 0) {
+								alert("부서 번호를 입력하세요.");
+								$("#deptNo").focus();
+								return;
+							}
+							f.submit();
+						});
+
 	});
-	
-	
-});
 </script>

@@ -79,7 +79,8 @@ if(dto==null){
 				<input type="hidden" name="page" value="<%=cPage%>">
 			</form>
 			<div class="text-right">
-				<a href="list.jsp?page=<%=cPage %>" class="btn btn-outline-secondary">목록</a>
+				<button type="button" id="prevPage" class="btn btn-outline-secondary">이전</button>
+				<%--이게 직전에 보던 페이지들로 가게끔 하려면...그냥 history back해야 한다 --%>
 				<button type="button" id="updateDept" class="btn btn-outline-success">수정</button>
 				<button type="button" id="deleteDept" class="btn btn-outline-danger">삭제</button>
 			</div>
@@ -97,6 +98,9 @@ if(dto==null){
 $(function(){
 	//전체 페이지 로딩 후 호출
 	$("#no").focus();
+	$("#prevPage").click(function(){
+		history.back(-1);
+	});
 	$("#updateDept").click(function(){
 		//js 유효성 검사
 		if($("#no").val().length==0){
