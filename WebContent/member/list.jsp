@@ -44,7 +44,6 @@
 	ArrayList<MemberDto> list = dao.select(start, len);
 	int currentBlock = cPage % pageLength == 0 ? (cPage / pageLength) : ((cPage / pageLength) + 1);
 	int totalBlock = totalPage % pageLength == 0 ? (totalPage / pageLength) : ((totalPage / pageLength) + 1);
-	;
 	//이게 곧 마지막 블록
 	startPage = 1 + (currentBlock - 1) * pageLength;
 	endPage = pageLength + (currentBlock - 1) * pageLength;
@@ -88,32 +87,34 @@
 		</thead>
 		<tbody>
 			<%
-				
-			%>
+			if (list.size() != 0) {
+		%>
+
+		<%
+			for (MemberDto dto : list) {
+		%>
 			<tr>
 				<td><%=pageNum--%></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td><%=dto.getName() %></td>
+				<td><%=dto.getEmail()%></td>
+				<td><%=dto.getPhone()%></td>
+				<td><%=dto.getRegdate()%></td>
 			</tr>
 			<%
-				
+			}}else{
 			%>
 			<tr>
 				<td colspan="6">데이터가 존재하지 않습니다.</td>
 			</tr>
 			<%
-				
+			}
 			%>
 		</tbody>
 	</table>
 
 
 	<div class="text-right">
-		<a href="write.jsp?page=<%=cPage%>" class="btn btn-outline-secondary">사원
-			등록</a>
+		<a href="write.jsp?page=<%=cPage%>" class="btn btn-outline-secondary">등록</a>
 	</div>
 </div>
 

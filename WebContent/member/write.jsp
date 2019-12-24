@@ -78,8 +78,12 @@
 			</form>
 			<div class="text-right">
 				<a href="list.jsp?page=<%=cPage%>" class="btn btn-outline-secondary">목록</a>
+				<%if(memberDto != null) {
+				
+				//헤더에서 들어가 있으니 할수 있음%>
 				<button type="button" id="saveMember"
 					class="btn btn-outline-success">저장</button>
+					<%} %>
 			</div>
 		</div>
 	</div>

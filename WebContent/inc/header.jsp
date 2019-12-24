@@ -1,3 +1,4 @@
+<%@page import="kr.co.acorn.dto.MemberDto"%>
 <%@ page pageEncoding="utf-8" %>
 
 <!doctype html>
@@ -27,6 +28,9 @@
 //				/dept/list.jsp , /emp/list.jsp	,	/notice/list.jsp
 	String uri = request.getRequestURI();
 //경로 return
+String contextPath = request.getContextPath();
+//이걸 넣으면...해당하는 context의 페이지들로 들어간다.
+out.println(contextPath);
 %>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -45,11 +49,40 @@
         <!--<li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
               </li>-->
+       <li class="nav-item <%if(uri.startsWith("/member")){ %> active<%} %>">
+          <a class="nav-link" href="/member/list.jsp">회원관리</a>
+        </li>
+        <li class="nav-item <%if(uri.startsWith("/file")){ %> active<%} %>">
+          <a class="nav-link" href="/file/index.jsp">파일업로드</a>
+        </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
+      <ul class="navbar-nav">
+      <%MemberDto memberDto =  (MemberDto)session.getAttribute("member");
+      // dto라는 변수를 이미 쓰고 있으니 변수 충돌 피하기
+      if(memberDto == null){
+      %>
+      <li class ="nav-item">
+      <a class="nav-link" href="/member/write.jsp">회원가입 </a>
+      </li>
+      <li class ="nav-item">
+      <a class="nav-link" href="/member/login.jsp">로그인</a>
+      </li>
+      <%}else{ %>
+      <li class ="nav-item">
+      <a class="nav-link" href="#"><%=memberDto.getName() %>님 환영합니다.</a>
+      </li>
+      <li class ="nav-item">
+      <a class="nav-link" href="/member/logout.jsp">로그아웃 </a>
+      </li>
+      
+      
+      <%} %>
+      </ul>
+      
+      <%-- <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      </form>--%>
     </div>
   </nav>
   <!--nav bar end-->
