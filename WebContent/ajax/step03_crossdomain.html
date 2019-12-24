@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ajax_get_json</title>
+</head>
+<body>
+	<div id="sung"></div>
+</body>
+<script>
+function test(obj){
+	document.getElementById("sung").innerHTML = JSON.stringify(obj);
+}
+</script>
+<script src="http://acornacademy.co.kr/blockchain/naver_json.jsp?call=test">
+//script는 외부 도메인 접근 가능,callback에서 call로 바뀌었다.보통 이런 jsonp는 제공 안하고...proxy로 씀
+//이 방법은 callback 부분의 코드를( ()이 괄호 추가해 주는)지원 안해주면 소용 없다.
+//=test(obj),즉 ajax호출이나 다름 없음...사실 편법이다.
+</script>
+</html>

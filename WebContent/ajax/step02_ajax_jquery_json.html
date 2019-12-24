@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ajax_get_json</title>
+<script src="../js/jquery-3.4.1.js">
+//script는 외부 도메인 접근 가능
+</script>
+<script>
+//전체 다 로딩 된 후 쓰이는 부분들
+$(function(){
+	$("#LoadAjax").click(function(){
+		
+		$.ajax({//key : value...
+			//type : 'GET',
+			type : 'POST',
+			url : 'emp_json.jsp',
+			//url : 'emp_json.jsp?start=0&length=10',
+					data : {"start":0,"length":10},
+			dateType : 'json',//xml과 html도 올 수 있음
+			error : function(){
+				alert('json load error');
+			},
+			success : function(obj){
+				console.log(obj);
+				console.log(typeof obj);
+				//이미 오브젝트로 들어옴
+				const listArray = obj.items;
+
+						let msg = '';
+						for (let i = 0; i < listArray.length; i++) {
+							let no = listArray[i].no;
+							let name = listArray[i].name;
+							msg += no + "," + name + "<br>";
+						}
+						$("#sung").html(msg);
+			}
+		});	
+	});
+	
+	
+});
+</script>
+</head>
+<body>
+	<div id="sung"></div>
+	<button id="LoadAjax">Ajax 불러오기</button>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ajax_get_json</title>
+<script>
+var xhr = null;
+//const면 에러남... ajax에 데이터 요청,받아오면 무조건 string으로 옴
+try{
+	xhr = new XMLHttpRequest();
+}catch(e){
+	xhr = new ActiveObject("Msxml2.XMLHTTP");
+}
+
+if(xhr ==null){
+	alert("Error xhr Object");
+}
+</script>
+</head>
+<body>
+<div id="song"></div>
+<button id="LoadAjax">Ajax 불러오기 </button>
+</body>
+<script>
+document.getElementById("LoadAjax").addEventListener("click",function(){
+	console.log('event');
+	
+	/*
+	xhr.open("GET","member_json.jsp?start=0&length=20",true);
+	//지금은 member_json.jsp 이 파일이 없어서 실행 안됌
+	//xhr.send(null);
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState==4 && xhr.status == 200){
+			//console.log(xhr.responseText);
+			//찍힌 들어가 있던 데이터
+			//이런식으로 전부 문자열로 넘어옴,json으로 넘길려면 json.parse이용
+			//console.log(typeof xhr.responseText);
+			
+			const obj = JSON.parse(xhr.responseText);
+			//문자열을 오브젝트로 바꿔줌
+			//console.log(typeof obj);
+			const listArray = obj.cafelist;
+			let msg = '';
+			for(let i =0;i>listArray.length;i++){
+				let name = listArray[i].name;
+				let clubid = listArray[i].clubid;
+				msg += name +","+clubid+"<br>";
+			}
+			
+			document.getElementById("sung").innerHTML = msg;
+		}
+	}*/
+	
+	xhr.open("GET","emp_json.jsp?start=0&length=5",true);
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState==4 && xhr.status == 200){
+			const obj = JSON.parse(xhr.responseText);
+			const listArray = obj.items;
+			
+			let msg = '';
+			for(let i =0;i<listArray.length;i++){
+				let no = listArray[i].no;
+				let name = listArray[i].name;
+				msg += no +","+name+"<br>";
+			}
+			console.log(msg);
+			document.getElementById("song").innerHTML = msg;
+		}
+	}
+	
+	xhr.send(null);
+});
+
+</script>
+</html>
